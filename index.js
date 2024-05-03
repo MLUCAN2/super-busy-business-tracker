@@ -50,7 +50,7 @@ async function mainMenu() {
     }
 
     
-// Add a way to go back to the main menu
+// Functions to handle user input
     const {back}= await inquirer.prompt({
         type: 'confirm',
         name: 'back',
@@ -149,8 +149,6 @@ async function addEmployee() {
             managerQuery.push(...managers.rows.map(manager=>({value: manager.id, name: `${manager.first_name} ${manager.last_name}`})));
         }
         const roleChoices= roles.rows.map(role=> ({value: role.id, name: role.title}));
-        // const {rows}= await db.query('select id as value, title as name from roles')
-        // const {rows: managers}= await db.query("select id as value, first_name || ' ' || last_name as name from employee" )
         const answers= await inquirer.prompt ([{
             
             type: 'input',
@@ -178,8 +176,6 @@ async function addEmployee() {
 
         if (!managers.rows.length && answers.manager_id===null){
             const newEmployee= await db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4) RETURNING *', [answers.first_name, last_name, role_id, manager_id])
-        
-            // const newEmployee= await db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4) RETURNING *', [first_name, last_name, role_id, manager_id]);
             console.table(newEmployee.rows);
             console.log('Added new employee: ', answers);
         }
@@ -199,12 +195,37 @@ async function addEmployee() {
     }
 async function updateEmployeeRole(employee_id, role_id) {
     try {
+        const employees= await db.query('SELECT id, first_name, last_name FROM employee');
+        const {employee_id}= await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employee_id',
+                message: 'Choose the employee.',
+                choices: employees.rows.map(employee=> ({
+                    value: employee.id, 
+                    name: `${employee.first_name} ${employee.last_name}`
+                }))
+            }
+        ]);
+
+        const roles= await db.query('SELECT id, title FROM roles');
+        const {role_id}= await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'role_id',
+                message: 'Choose the role.',
+                choices: roles.rows.map(role=> ({
+                    value: role.id, 
+                    name: role.title
+                }))
+            }
+        ]);
+
         const updatedEmployee= await db.query('UPDATE employee SET role_id = $1 WHERE id = $2 RETURNING *', [role_id, employee_id]);
-        console.table(updatedEmployee.rows);
         console.log('Updated employee role: ', updatedEmployee);
     }
     catch(err) {
         console.error('Could not update employee role: ', err);
     }
-}
+};
 
