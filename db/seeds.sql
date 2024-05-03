@@ -23,11 +23,11 @@ VALUES
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
 	('Burt', 'Macklin', 6, NULL),
-	('Janet', 'Snakehorn', 5, NULL),
-	('Lemmony', 'Snicker', 1, NULL),
-	('Alfred', 'Bottomsworth', 2, NULL),
+	('Janet', 'Snakehorn', 5, 1),
+	('Lemmony', 'Snicker', 1, 2),
+	('Alfred', 'Bottomsworth', 2, 3),
 	('Scarlet', 'Paperdog', 3, NULL),
-	('Rick', 'Mortimer', 4, NULL),
+	('Rick', 'Mortimer', 4, 5),
 	('Eric', 'Last Name Here-Edwards', 7, NULL);
 
 -- View combined table
