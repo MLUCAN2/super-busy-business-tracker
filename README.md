@@ -23,3 +23,5 @@ Meg Myers (Tutor): assisting with the debugging and file structure.
 ## License
 
 N/A
+
+![b-tracker](https://github.com/MLUCAN2/super-busy-business-tracker/assets/162901593/9b2e3099-91a5-4baf-9430-6505f92c3a2b)
