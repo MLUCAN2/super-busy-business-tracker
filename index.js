@@ -75,6 +75,7 @@ async function viewAllDepartments() {
     }
 }
 async function viewAllRoles() {
+
     try {
         const roles= await db.query('SELECT roles.title, roles.salary, departments.department_name FROM roles JOIN departments ON departments.id=roles.department_id');
         console.table(roles.rows);
